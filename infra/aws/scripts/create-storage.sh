@@ -1,22 +1,18 @@
 APP_NAME=$1
 
-RESOURCE_GROUP=tfstate-rg-$APP_NAME
-STORAGE_ACCOUNT=tfstate$APP_NAME$RANDOM
 
-if [ $(az group exists --name $RESOURCE_GROUP) = false ]; then
-    # Create resource group
-    az group create --name $RESOURCE_GROUP --location eastus
+S3_BUCKET_NAME="terraform-state-bucket-$APP_NAME"
+DYNAMODB_TABLE_NAME="terraform-locks-$APP_NAME"
 
-    # Create storage account
-    az storage account create --resource-group $RESOURCE_GROUP --name $STORAGE_ACCOUNT --sku Standard_LRS --encryption-services blob
-    
-    # Create blob container
-    az storage container create --name tfstate --account-name $STORAGE_ACCOUNT
+# Create S3 bucket
+aws s3api create-bucket --bucket $S3_BUCKET_NAME
+aws s3api put-bucket-versioning --bucket $S3_BUCKET_NAME --versioning-configuration Status=Enabled
 
-    # Save storage account in GitHub
-    gh variable set STORAGE_ACCOUNT --body $STORAGE_ACCOUNT
+# Create DynamoDB table
+aws dynamodb create-table \
+    --table-name $DYNAMODB_TABLE_NAME \
+    --attribute-definitions AttributeName=LockID,AttributeType=S \
+    --key-schema AttributeName=LockID,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST
 
-    echo $STORAGE_ACCOUNT
-else
-    echo "Resource group $RESOURCE_GROUP is already created"
-fi
+

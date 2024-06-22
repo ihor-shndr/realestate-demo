@@ -1,7 +1,6 @@
 # Define variables
 app_name=$1
 IAM_USER_NAME="github-actions-user-$app_name"
-POLICY_NAME="GitHubActionsPolicy"
 
 # Create IAM user
 aws iam create-user --user-name $IAM_USER_NAME

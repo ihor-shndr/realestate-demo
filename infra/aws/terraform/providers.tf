@@ -9,6 +9,10 @@ terraform {
       version = ">3.5.0"
     }
   }
+
+  backend "s3" {
+    region         = "us-east-1"       # Change to your bucket's region
+  }
 }
 provider "aws" {
 }

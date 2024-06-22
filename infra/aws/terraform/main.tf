@@ -4,8 +4,8 @@ resource "random_string" "random" {
   upper   = false
 }
 
-resource "aws_iam_role" "example_role" {
-  name = "example-role"
+resource "aws_iam_role" "beanstalk_role" {
+  name = "beanstalk-role-${var.app_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -19,18 +19,18 @@ resource "aws_iam_role" "example_role" {
   })
 
   tags = {
-    Name = "example-role"
+    Name = "beanstalk-role-${var.app_name}"
   }
 }
 
-resource "aws_iam_role_policy_attachment" "example_role_policy_attachment" {
-  role       = aws_iam_role.example_role.name
+resource "aws_iam_role_policy_attachment" "beanstalk_role_policy_attachment" {
+  role       = aws_iam_role.beanstalk_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
 }
 
-resource "aws_iam_instance_profile" "example_instance_profile" {
-  name = "example-instance-profile"
-  role = aws_iam_role.example_role.name
+resource "aws_iam_instance_profile" "beanstalk_instance_profile" {
+  name = aws_iam_role.beanstalk_role.name
+  role = aws_iam_role.beanstalk_role.name
 }
 
 resource "aws_elastic_beanstalk_application" "beanstalk_app" {
@@ -52,7 +52,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = aws_iam_instance_profile.example_instance_profile.name
+    value     = aws_iam_instance_profile.beanstalk_instance_profile.name
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"

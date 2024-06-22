@@ -19,7 +19,7 @@ jobs:
    defaults:
      run:
        shell: bash
-       working-directory: ./infra/azure/terraform
+       working-directory: ./infra/aws/terraform
  
    steps:
      - name: Checkout the repository to the runner
@@ -31,31 +31,27 @@ jobs:
          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-region: us-east-1
-  
-     - name: test aws
-       run: | 
-         aws s3 ls
 
-  #    - name: Create backend.conf file
-  #      run: |
-  #        chmod +x ../scripts/create-backend-conf.sh
-  #        ../scripts/create-backend-conf.sh ${{ vars.APP_NAME }} ${{ env.ENV }} ${{ vars.STORAGE_ACCOUNT }}
+     - name: Create backend.conf file
+       run: |
+         chmod +x ../scripts/create-backend-conf.sh
+         ../scripts/create-backend-conf.sh ${{ vars.APP_NAME }} ${{ env.ENV }}
 
-  #    - name: Setup Terraform with specified version on the runner
-  #      uses: hashicorp/setup-terraform@v3
+     - name: Setup Terraform with specified version on the runner
+       uses: hashicorp/setup-terraform@v3
     
-  #    - name: Terraform init
-  #      id: init
-  #      run: terraform init -backend-config=backend.conf
+     - name: Terraform init
+       id: init
+       run: terraform init -backend-config=backend.conf
 
-  #    - uses: terraform-linters/setup-tflint@v3
-  #      name: Setup TFLint
+     - uses: terraform-linters/setup-tflint@v3
+       name: Setup TFLint
          
-  #    - name: Run TFLint
-  #      run: tflint -f compact
+     - name: Run TFLint
+       run: tflint -f compact
  
-  #    - name: Terraform Apply
-  #      run: terraform apply -var env=${{ env.ENV }} -var app_name=${{ vars.APP_NAME }} -auto-approve
+     - name: Terraform Apply
+       run: terraform apply -var env=${{ env.ENV }} -var app_name=${{ vars.APP_NAME }} -auto-approve
 
   # deploy:
   #   name: 'Build and deploy'
