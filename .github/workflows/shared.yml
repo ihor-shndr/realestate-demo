@@ -53,25 +53,24 @@ jobs:
      - name: Terraform Apply
        run: terraform apply -var env=${{ env.ENV }} -var app_name=${{ vars.APP_NAME }} -auto-approve
 
-  # deploy:
-  #   name: 'Build and deploy'
-  #   runs-on: ubuntu-latest
-  #   needs: terraform
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #       working-directory: ./Sample.API
-  #   steps:
-  #     - name: Azure Login
-  #       uses: azure/login@v1.4.6
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+  deploy:
+    name: 'Build and deploy'
+    runs-on: ubuntu-latest
+    needs: terraform
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
-  #     - name: Checkout GitHub Action
-  #       uses: actions/checkout@v4
-
-  #     - name: Setup .NET Core
-  #       uses: actions/setup-dotnet@v3
+      - name: Checkout source code
+        run: npm install
+      - name: Checkout source code
+        run: npm run build
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
 
   #     - name: dotnet build and publish
   #       run: |
