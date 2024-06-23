@@ -9,6 +9,7 @@ aws iam create-user --user-name $IAM_USER_NAME
 aws iam attach-user-policy --user-name $IAM_USER_NAME --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
 aws iam attach-user-policy --user-name $IAM_USER_NAME --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
 aws iam attach-user-policy --user-name $IAM_USER_NAME --policy-arn arn:aws:iam::aws:policy/AdministratorAccess-AWSElasticBeanstalk
+aws iam attach-user-policy --user-name $IAM_USER_NAME --policy-arn arn:aws:iam::aws:policy/IAMFullAccess
 
 # Create access keys for the user
 aws iam create-access-key --user-name $IAM_USER_NAME > iam_credentials.json
