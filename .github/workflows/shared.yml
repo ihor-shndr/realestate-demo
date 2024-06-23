@@ -65,9 +65,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Checkout source code
+      - name: install
         run: npm install
-      - name: Checkout source code
+      - name: build
         run: npm run build
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
@@ -76,7 +76,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ vars.APP_NAME }} 
+          application_name: eb-${{ vars.APP_NAME }}-${{ env.ENV }}
           environment_name: eb-env-${{ vars.APP_NAME }}-${{ env.ENV }}
           version_label: ${{ github.sha }}
           region: us-east-1
