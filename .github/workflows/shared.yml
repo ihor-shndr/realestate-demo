@@ -66,9 +66,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: install
-        run: npm install
+        run: yarn install
       - name: build
-        run: npm run build
+        run: yarn run build
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*' "**/node_modules/*"
       - name: Deploy to EB
