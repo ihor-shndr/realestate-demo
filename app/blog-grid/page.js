@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 export async function getBooks() {
   // Call an external API endpoint to get posts
-  const res = await fetch("http://localhost:5000/graphql", {
+  const res = await fetch("https://pa3ksnnme2.us-east-1.awsapprunner.com/graphql/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
