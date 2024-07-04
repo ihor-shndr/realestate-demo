@@ -13,6 +13,8 @@ aws s3api delete-objects \
       --bucket terraform-state-bucket-$APP_NAME | \
       jq '{Objects: [.Versions[] | {Key:.Key, VersionId : .VersionId}], Quiet: false}')"
 
+aws s3api delete-bucket --bucket terraform-state-bucket-$APP_NAME
+
 aws dynamodb delete-table --table-name terraform-locks-$APP_NAME
 
 #Delete user
