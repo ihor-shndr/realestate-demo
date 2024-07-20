@@ -57,7 +57,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalk_env" {
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "EnvironmentType"
-    value     = "SingleInstance" # Single instance environment
+    value     = "SingleInstance"
   }
 
   setting {

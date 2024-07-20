@@ -1,11 +1,22 @@
 APP_NAME=$1
-ENV=$2
 
-./create-backend-conf.sh $APP_NAME $ENV
+# Shift the first argument (app_name)
+shift
 
-terraform -chdir=../terraform init  -backend-config=backend.conf
+# The rest of the arguments are environments
+ENVS=("$@")
 
-terraform -chdir=../terraform destroy -auto-approve -var env=$ENV -var app_name=$APP_NAME
+# Iterate over each environment and execute the terraform destroy command
+for ENV in "${ENVS[@]}"; do
+  echo "Destroying environment: $ENV"
+
+  ./create-backend-conf.sh $APP_NAME $ENV
+
+  terraform -chdir=../terraform init  -backend-config=backend.conf
+
+  terraform -chdir=../terraform destroy -auto-approve -var env=$ENV -var app_name=$APP_NAME
+done
+
 
 aws s3api delete-objects \
       --bucket terraform-state-bucket-$APP_NAME \
