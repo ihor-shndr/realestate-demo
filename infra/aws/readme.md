@@ -19,6 +19,8 @@
 11. In terminal run `aws configure`
 12. Type key and secret
 
+## Install jq
+
 
 ## Set up AWS credentials and create cloud storage for Terraform:
 run `set-up.sh` from `scripts` folder with `app name` as a first parameter. Ex: `./set-up.sh myapp`. It will prepare Terraform and GitHub repository for the first usage.
