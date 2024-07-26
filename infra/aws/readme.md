@@ -1,6 +1,8 @@
 # Prerequisites:
 1. `GitHub CLI` - [link](https://cli.github.com/)
 2. `AWS CLI` - [link](https://aws.amazon.com/cli/)
+3. `jq` - [link](https://jqlang.github.io/jq/download/)
+4. `bash` - it comes with `git` bundle: [link](https://git-scm.com/downloads)
 
 ### Configure GitHub CLI:
 `gh auth login`
@@ -19,11 +21,8 @@
 11. In terminal run `aws configure`
 12. Type key and secret
 
-## Install jq
-
-
 ## Set up AWS credentials and create cloud storage for Terraform:
-run `set-up.sh` from `scripts` folder with `app name` as a first parameter. Ex: `./set-up.sh myapp`. It will prepare Terraform and GitHub repository for the first usage.
+in `bash` run `set-up.sh` from `scripts` folder with `app name` as a first parameter. Ex: `./set-up.sh myapp`. It will prepare Terraform and GitHub repository for the first usage.
 
 
 ## Add a new environment:
